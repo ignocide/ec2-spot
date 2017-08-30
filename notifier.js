@@ -2,12 +2,13 @@
 
 const ec2meta = require('ec2-meta')
 const request = require('request')
-const Cronjob = require('cron').CronJob
+const CronTab = require('crontab')
+const path = require('path')
 
 var job = null
 
-var notifyMessage = function (type, message) {
-  this.type = type,
+var NotifyMessage = function (type, message) {
+  this.type = type
   this.message = message
 }
 
@@ -21,7 +22,7 @@ var start = function (url) {
     request({
       method: 'POST',
       url: url,
-      json: notifyMessage('start', {
+      json: new NotifyMessage('start', {
         instanceId: instanceId,
         timestamp: new Date()
       }),
@@ -39,10 +40,6 @@ var terminate = function (url, date) {
       return
     }
 
-    if (job) {
-      job.stop()
-    }
-
     request({
       method: 'POST',
       url: url,
@@ -54,28 +51,47 @@ var terminate = function (url, date) {
         'content-type': 'application/json'
       }
     }, function () {})
-  })
-}
 
-var cronTerminate = function (url) {
-  job = new CronJob('*/6 * * * * *', function () {
-    ec2meta.load('termination-time', function (err, date) {
-      // not ec2 (local)
-      if (err || !date) {
+    CronTab.load(function (err, crontab) {
+      if (err || !crontab) {
         return
       }
 
-      job.stop()
+      crontab.remove({
+        comment: 'ec2-spot-terminate-notification'
+      })
 
-      terminate(url, date)
+      crontab.save(function () {})
     })
   })
+}
 
-  job.start()
+var checkTerminate = function (url) {
+  ec2meta.load('termination-time', function (err, date) {
+    // not ec2 (local)
+    if (err || !date) {
+      return
+    }
+
+    terminate(url, date)
+  })
+}
+
+var registerCron = function (url) {
+  CronTab.load(function (err, crontab) {
+    if (err || !crontab) {
+      return
+    }
+
+    var jobFile = path.join(__dirname, 'job.js')
+    job = crontab.create(['node', jobFile, url].join(' '), '*/6 * * * *', 'ec2-spot-terminate-notification')
+    crontab.save(function () {})
+  })
 }
 
 module.exports = {
   start: start,
   terminate: terminate,
-  cronTerminate: cronTerminate
+  checkTerminate: checkTerminate,
+  registerCron: registerCron
 }

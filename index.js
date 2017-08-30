@@ -21,7 +21,7 @@ var createPreScript = function (opts) {
       script.push(`node -e 'var notifier = require("ec2-spot/notifier"); notifier.start("${opts.create.url}")'`)
     }
     if (opts.terminate && opts.terminate.url) {
-      script.push(`node -e 'var notifier = require("ec2-spot/notifier"); notifier.cronTerminate("${opts.terminate.url}")'`)
+      script.push(`node -e 'var notifier = require("ec2-spot/notifier"); notifier.registerCron("${opts.terminate.url}")'`)
     }
   }
   script.push('')
