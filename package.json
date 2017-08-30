@@ -24,6 +24,8 @@
   "homepage": "https://github.com/ignocide/spot-ec2#readme",
   "dependencies": {
     "aws-sdk": "^2.104.0",
-    "ec2-meta": "^0.1.1"
+    "cron": "^1.2.1",
+    "ec2-meta": "^0.1.1",
+    "request": "^2.81.0"
   }
 }
