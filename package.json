@@ -1,0 +1,29 @@
+{
+  "name": "spot-ec2",
+  "version": "1.0.0",
+  "description": "running ec2 spot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://ignocide@github.com/ignocide/spot-ec2.git"
+  },
+  "keywords": [
+    "ec2",
+    "spot",
+    "instance",
+    "spot"
+  ],
+  "author": "ignocide",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ignocide/spot-ec2/issues"
+  },
+  "homepage": "https://github.com/ignocide/spot-ec2#readme",
+  "dependencies": {
+    "aws-sdk": "^2.104.0",
+    "ec2-meta": "^0.1.1"
+  }
+}
