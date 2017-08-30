@@ -16,14 +16,13 @@ var createPreScript = function (opts) {
     script.push('#!/bin/bash')
     script.push('mkdir /.spot_webhook_notifier')
     script.push('cd /.spot_webhook_notifier')
-    script.push('npm install https://github.com/ignocide/spot-ec2')
+    script.push('npm install ec2-spot')
     if (opts.create && opts.create.url) {
-      script.push(`node -e 'var notifier = require("spot-ec2/notifier"); notifier.start("${opts.create.url}")'`)
+      script.push(`node -e 'var notifier = require("ec2-spot/notifier"); notifier.start("${opts.create.url}")'`)
     }
     if (opts.terminate && opts.terminate.url) {
-      script.push(`node -e 'var notifier = require("spot-ec2/notifier"); notifier.cronTerminate("${opts.terminate.url}")'`)
+      script.push(`node -e 'var notifier = require("ec2-spot/notifier"); notifier.cronTerminate("${opts.terminate.url}")'`)
     }
-    script.push('exit')
   }
   script.push('')
 
