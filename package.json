@@ -1,6 +1,6 @@
 {
   "name": "ec2-spot",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "running ec2 spot",
   "main": "index.js",
   "scripts": {
