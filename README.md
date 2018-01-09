@@ -19,6 +19,7 @@ spot.launch(function (err, result) {
 ### terminate
 
 ```javascript
+//not remote, use in local env
 spot.terminate(function () {
   process.exit(0)
 })
